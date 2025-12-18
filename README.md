@@ -116,18 +116,3 @@ docker compose exec backend python scripts/concurrent_transfer_test.py \
 ```bash
 docker compose exec backend python manage.py test
 ```
-
-## Чеклист для видео (3–5 минут)
-
-- Открыть код `wallets/services.py`:
-  - показать `transaction.atomic()`
-  - показать `select_for_update()` + **порядок блокировок** по `id`
-  - показать проверку баланса **после** блокировки
-  - показать `F()`-обновления балансов
-- Открыть `wallets/views.py`:
-  - показать `transaction.on_commit(lambda: send_notification.delay(...))`
-- Запустить демо:
-  - `python manage.py demo_race_condition ...`
-  - показать, что баланс не ушёл в минус
-
-
