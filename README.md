@@ -42,6 +42,21 @@ docker compose up --build
 docker compose exec backend python manage.py migrate
 ```
 
+### 3) Быстрые sanity-check проверки (рекомендуется)
+
+Проверить, что модели и миграции синхронизированы (должно быть `No changes detected`):
+
+```bash
+docker compose exec backend python manage.py makemigrations --check --dry-run
+```
+
+Проверить DB constraints прямо в PostgreSQL (видно `wallet_balance_non_negative`, `tx_amount_gt_zero`, `tx_fee_non_negative`):
+
+```bash
+docker compose exec db psql -U tsc -d tsc -c "\\d wallets_wallet"
+docker compose exec db psql -U tsc -d tsc -c "\\d wallets_transaction"
+```
+
 ## API: перевод
 
 Endpoint: **POST** `http://localhost:8000/api/transfer`
@@ -114,5 +129,5 @@ docker compose exec backend python scripts/concurrent_transfer_test.py \
 ## Тесты
 
 ```bash
-docker compose exec backend python manage.py test
+docker compose exec backend python manage.py test --keepdb
 ```
